@@ -86,24 +86,28 @@ class openstack::keystone (
   $nova_public_address         = false,
   $nova_internal_address       = false,
   $nova_admin_address          = false,
+  $nova_public_port	       = 8774,
   # glance
   $glance                      = true,
   $glance_user_password,
   $glance_public_address       = false,
   $glance_internal_address     = false,
   $glance_admin_address        = false,
+  $glance_public_port	       = 9292,
   # cinder
   $cinder                      = true,
   $cinder_user_password,
   $cinder_public_address       = false,
   $cinder_internal_address     = false,
   $cinder_admin_address        = false,
+  $cinder_public_port	       = 8776,
   # neutron
   $neutron                     = true,
   $neutron_user_password,
   $neutron_public_address      = false,
   $neutron_internal_address    = false,
   $neutron_admin_address       = false,
+  $neutron_public_port	       = 9696,
   # ceilometer
   $ceilometer                  = false,
   $ceilometer_user_password    = false,
@@ -319,6 +323,7 @@ class openstack::keystone (
         public_protocol  => $public_protocol,
         admin_address    => $glance_admin_real,
         internal_address => $glance_internal_real,
+	port		 => $glance_public_port,
         region           => $region,
       }
     }
@@ -332,6 +337,7 @@ class openstack::keystone (
         admin_address    => $nova_admin_real,
         internal_address => $nova_internal_real,
         region           => $region,
+ 	compute_port	 => $nova_public_port,
       }
     }
 
@@ -343,6 +349,7 @@ class openstack::keystone (
         public_protocol  => $public_protocol,
         admin_address    => $cinder_admin_real,
         internal_address => $cinder_internal_real,
+	port		=> $cinder_public_port,
         region           => $region,
       }
     }
@@ -354,6 +361,7 @@ class openstack::keystone (
         public_protocol  => $public_protocol,
         admin_address    => $neutron_admin_real,
         internal_address => $neutron_internal_real,
+	port		=> $neutron_public_port,
         region           => $region,
       }
     }
