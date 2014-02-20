@@ -87,6 +87,7 @@ class openstack::keystone (
   $nova_internal_address       = false,
   $nova_admin_address          = false,
   $nova_public_port	       = 8774,
+  $nova_public_protocol       = 'http',
   # glance
   $glance                      = true,
   $glance_user_password,
@@ -94,6 +95,8 @@ class openstack::keystone (
   $glance_internal_address     = false,
   $glance_admin_address        = false,
   $glance_public_port	       = 9292,
+  $glance_public_protocol	= 'http',
+  $glance_internal_protocol	= 'http',
   # cinder
   $cinder                      = true,
   $cinder_user_password,
@@ -101,6 +104,7 @@ class openstack::keystone (
   $cinder_internal_address     = false,
   $cinder_admin_address        = false,
   $cinder_public_port	       = 8776,
+  $cinder_public_protocol	= 'http',
   # neutron
   $neutron                     = true,
   $neutron_user_password,
@@ -320,7 +324,8 @@ class openstack::keystone (
       class { 'glance::keystone::auth':
         password         => $glance_user_password,
         public_address   => $glance_public_real,
-        public_protocol  => $public_protocol,
+        public_protocol  => $glance_public_protocol,
+	internal_protocol => $glance_internal_protocol,
         admin_address    => $glance_admin_real,
         internal_address => $glance_internal_real,
 	port		 => $glance_public_port,
@@ -333,7 +338,7 @@ class openstack::keystone (
       class { 'nova::keystone::auth':
         password         => $nova_user_password,
         public_address   => $nova_public_real,
-        public_protocol  => $public_protocol,
+        public_protocol  => $nova_public_protocol,
         admin_address    => $nova_admin_real,
         internal_address => $nova_internal_real,
         region           => $region,
@@ -346,7 +351,7 @@ class openstack::keystone (
       class { 'cinder::keystone::auth':
         password         => $cinder_user_password,
         public_address   => $cinder_public_real,
-        public_protocol  => $public_protocol,
+        public_protocol  => $cinder_public_protocol,
         admin_address    => $cinder_admin_real,
         internal_address => $cinder_internal_real,
 	port		=> $cinder_public_port,
