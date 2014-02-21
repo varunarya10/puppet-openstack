@@ -75,11 +75,15 @@ class openstack::keystone (
   $verbose                     = false,
   $debug                       = false,
   $bind_host                   = '0.0.0.0',
+  $bind_port		      	= 5000,
   $region                      = 'RegionOne',
   $token_driver                = 'keystone.token.backends.sql.Token',
   $internal_address            = false,
   $admin_address               = false,
   $enabled                     = true,
+  $keystone_public_url		= undef,
+  $keystone_internal_url	= undef,
+  $keystone_admin_url		= undef,
   # nova
   $nova                        = true,
   $nova_user_password,
@@ -112,6 +116,8 @@ class openstack::keystone (
   $neutron_internal_address    = false,
   $neutron_admin_address       = false,
   $neutron_public_port	       = 9696,
+  $neutron_internal_protocol   = 'http',
+  $neutron_public_protocol	= 'http',
   # ceilometer
   $ceilometer                  = false,
   $ceilometer_user_password    = false,
@@ -138,7 +144,10 @@ class openstack::keystone (
   $heat_cfn_admin_address      = false,
   # logging
   $use_syslog                  = false,
-  $log_facility                = 'LOG_USER'
+  $log_facility                = 'LOG_USER',
+#FIXME: Workaround to enable SSL
+  $keystone_admin_port	 	= 35357 ,
+  $keystone_public_port		= 5000,
 ) {
 
   # Install and configure Keystone
@@ -300,6 +309,9 @@ class openstack::keystone (
     sql_connection => $sql_conn,
     use_syslog     => $use_syslog,
     log_facility   => $log_facility,
+#FIXME: WORKAROUND TO ENABLE SSL
+    public_port	   => $keystone_public_port,
+    admin_port	    => $keystone_admin_port,
   }
 
   if ($enabled) {
@@ -312,6 +324,9 @@ class openstack::keystone (
 
     # Setup the Keystone Identity Endpoint
     class { 'keystone::endpoint':
+      public_url       => $keystone_public_url,
+      internal_url	=> $keystone_internal_url,
+      admin_url		=> $keystone_admin_url,
       public_address   => $public_address,
       public_protocol  => $public_protocol,
       admin_address    => $admin_real,
@@ -363,7 +378,8 @@ class openstack::keystone (
       class { 'neutron::keystone::auth':
         password         => $neutron_user_password,
         public_address   => $neutron_public_real,
-        public_protocol  => $public_protocol,
+        public_protocol  => $neutron_public_protocol,
+	internal_protocol => $neutron_internal_protocol,
         admin_address    => $neutron_admin_real,
         internal_address => $neutron_internal_real,
 	port		=> $neutron_public_port,
