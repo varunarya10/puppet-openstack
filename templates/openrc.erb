@@ -7,7 +7,7 @@ export OS_NO_CACHE='<%= @use_no_cache %>'
 if [ `echo $1 | grep -c [a-zA-Z0-9]` -ne 0 ];  then
 	export OS_TENANT_NAME=$1
 else
-	export OS_TENANT_NAME='<%= @admin_tenant %>
+	export OS_TENANT_NAME='<%= @admin_tenant %>'
 fi
 export OS_USERNAME='<%= @admin_user %>'
 export OS_PASSWORD='<%= @admin_password.gsub(/'/){ %q(\') } %>'
