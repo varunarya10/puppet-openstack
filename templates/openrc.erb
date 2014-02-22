@@ -4,7 +4,11 @@ export OS_SERVICE_TOKEN='<%= @keystone_admin_token.gsub(/'/){ %q(\') } %>'
 export OS_SERVICE_ENDPOINT='https://<%= @controller_node %>:35357/v2.0/'
 <% end -%>
 export OS_NO_CACHE='<%= @use_no_cache %>'
-export OS_TENANT_NAME='<%= @admin_tenant %>'
+if [ `echo $1 | grep -c [a-zA-Z0-9]` -ne 0 ];  then
+	export OS_TENANT_NAME=$1
+else
+	export OS_TENANT_NAME='<%= @admin_tenant %>
+fi
 export OS_USERNAME='<%= @admin_user %>'
 export OS_PASSWORD='<%= @admin_password.gsub(/'/){ %q(\') } %>'
 export OS_AUTH_URL='https://<%= @controller_node %>/v2.0/'
