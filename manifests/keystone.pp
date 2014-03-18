@@ -85,7 +85,7 @@ class openstack::keystone (
   $keystone_internal_url	= undef,
   $keystone_admin_url		= undef,
   $keystone_cache_enabled	= false,
-  $keystone_cache_config_prefix	= cache.keystone,
+  $keystone_cache_config_prefix	= 'cache.keystone',
   $keystone_cache_expiration_time = 600,
   $keystone_cache_backend 	= undef,
   $keystone_cache_backend_argument	= undef,
@@ -322,7 +322,7 @@ class openstack::keystone (
     keystone_cache_config_prefix    => $keystone_cache_config_prefix,
     keystone_cache_expiration_time  => $keystone_cache_expiration_time,     
     keystone_cache_backend  => $keystone_cache_backend,
-    keystone_cache_backend_argument = $keystone_cache_backend_argument,
+    keystone_cache_backend_argument => $keystone_cache_backend_argument,
   }
 
   if ($enabled) {
