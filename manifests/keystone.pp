@@ -84,6 +84,11 @@ class openstack::keystone (
   $keystone_public_url		= undef,
   $keystone_internal_url	= undef,
   $keystone_admin_url		= undef,
+  $keystone_cache_enabled	= false,
+  $keystone_cache_config_prefix	= cache.keystone,
+  $keystone_cache_expiration_time = 600,
+  $keystone_cache_backend 	= undef,
+  $keystone_cache_backend_argument	= undef,
   # nova
   $nova                        = true,
   $nova_user_password,
@@ -312,6 +317,12 @@ class openstack::keystone (
 #FIXME: WORKAROUND TO ENABLE SSL
     public_port	   => $keystone_public_port,
     admin_port	    => $keystone_admin_port,
+    ## Cache configuration
+    keystone_cache_enabled  => $keystone_cache_enabled,
+    keystone_cache_config_prefix    => $keystone_cache_config_prefix,
+    keystone_cache_expiration_time  => $keystone_cache_expiration_time,     
+    keystone_cache_backend  => $keystone_cache_backend,
+    keystone_cache_backend_argument = $keystone_cache_backend_argument,
   }
 
   if ($enabled) {
