@@ -11,7 +11,7 @@ else
 fi
 export OS_USERNAME='<%= @admin_user %>'
 export OS_PASSWORD='<%= @admin_password.gsub(/'/){ %q(\') } %>'
-export OS_AUTH_URL='<%= @keystone_protocol %>://<%= @controller_node %>:<%= @keystone_port %>/<%= @keystone_version%>/
+export OS_AUTH_URL='<%= @keystone_protocol %>://<%= @controller_node %>:<%= @keystone_port %>/<%= @keystone_version%>/'
 #https://<%= @controller_node %>/v2.0/'
 export OS_AUTH_STRATEGY='keystone'
 export OS_REGION_NAME='<%= @region_name %>'
